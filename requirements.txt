@@ -1,0 +1,26 @@
+# KCom — Python dependencies
+# Install all required packages:
+#   pip install -r requirements.txt
+#
+# USB HID also needs the native C library (installed once via the OS package manager):
+#   Linux:   sudo apt install libhidapi-hidraw0 libhidapi-libusb0
+#   macOS:   brew install hidapi
+#   Windows: bundled automatically by the hidapi wheel
+
+
+# ── Core UI ──────────────────────────────────────────────────────────────────
+PyQt6>=6.6.0
+
+# ── Serial / UART ─────────────────────────────────────────────────────────────
+pyserial>=3.5
+
+# ── USB HID ───────────────────────────────────────────────────────────────────
+# Provides 'import hid'. The native libhidapi C library must also be present
+# (see the OS-level install commands at the top of this file).
+hidapi>=0.14.0
+
+# ── HTTP / JSON API ───────────────────────────────────────────────────────────
+# Required only when Settings → Advanced → HTTP/JSON API is enabled, but
+# bundled into the build so the feature works out of the box.
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0

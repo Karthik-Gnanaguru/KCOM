@@ -1,0 +1,74 @@
+{
+  "version": "1.1",
+  "created": "2026-05-29T00:00:00",
+  "name": "Loopback Test",
+  "notes": "Connect TX→RX on the same serial port (loopback adapter or short wire).\nSend Ping, verify PONG echo trigger fires.",
+  "port_configs": [
+    {
+      "connection_type": "serial",
+      "serial": {
+        "port": "/dev/ttyUSB0",
+        "baud_rate": 115200,
+        "data_bits": 8,
+        "parity": "N",
+        "stop_bits": 1.0,
+        "flow_control": "none",
+        "timeout": 0.0
+      },
+      "network": {"host": "localhost", "port": 502},
+      "hid": {"vendor_id": 0, "product_id": 0, "usage_page": 0, "interface_number": -1, "report_size": 64},
+      "named_pipe": {"path": ""},
+      "name": "Loopback",
+      "auto_reconnect": true
+    }
+  ],
+  "tap_configs": [],
+  "sequences": [
+    {
+      "id": "seq-ping",
+      "name": "Ping",
+      "data_str": "50 49 4E 47",
+      "encoding": "hex",
+      "terminator": "crlf",
+      "checksum": "none",
+      "checksum_start": 0,
+      "repeat_count": 1,
+      "repeat_interval_ms": 0,
+      "delay_before_ms": 0,
+      "byte_delay_ms": 0,
+      "color": "#89b4fa",
+      "description": "Send ASCII 'PING' with CRLF terminator",
+      "named_values": {}
+    },
+    {
+      "id": "seq-counter",
+      "name": "Counter (wildcard)",
+      "data_str": "AA # BB",
+      "encoding": "hex",
+      "terminator": "none",
+      "checksum": "xor",
+      "checksum_start": 0,
+      "repeat_count": 0,
+      "repeat_interval_ms": 500,
+      "delay_before_ms": 0,
+      "byte_delay_ms": 0,
+      "color": "#a6e3a1",
+      "description": "Frame: AA [counter 0-255] BB [XOR checksum]. # increments each send.",
+      "named_values": {}
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig-pong",
+      "name": "PONG echo",
+      "enabled": true,
+      "match_type": "contains",
+      "pattern": "50 4F 4E 47",
+      "pattern_encoding": "hex",
+      "action": "log",
+      "action_data": "",
+      "color": "#f9e2af",
+      "description": "Fires when ASCII 'PONG' is received back from the loopback"
+    }
+  ]
+}

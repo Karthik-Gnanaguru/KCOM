@@ -1,0 +1,90 @@
+{
+  "version": "1.1",
+  "created": "2026-05-29T00:00:00",
+  "name": "Modbus RTU Master",
+  "notes": "Modbus RTU master — CRC-16 is appended automatically to every sequence.\nChange /dev/ttyUSB0 to your port and adjust slave address/register addresses as needed.",
+  "port_configs": [
+    {
+      "connection_type": "serial",
+      "serial": {
+        "port": "/dev/ttyUSB0",
+        "baud_rate": 9600,
+        "data_bits": 8,
+        "parity": "N",
+        "stop_bits": 1.0,
+        "flow_control": "none",
+        "timeout": 0.0
+      },
+      "network": {"host": "localhost", "port": 502},
+      "hid": {"vendor_id": 0, "product_id": 0, "usage_page": 0, "interface_number": -1, "report_size": 64},
+      "named_pipe": {"path": ""},
+      "name": "Modbus RTU",
+      "auto_reconnect": false
+    }
+  ],
+  "tap_configs": [],
+  "sequences": [
+    {
+      "id": "seq-fc03",
+      "name": "FC03 Read HR 1-4",
+      "data_str": "01 03 00 00 00 04",
+      "encoding": "hex",
+      "terminator": "none",
+      "checksum": "crc16_modbus",
+      "checksum_start": 0,
+      "repeat_count": 1,
+      "repeat_interval_ms": 0,
+      "delay_before_ms": 0,
+      "byte_delay_ms": 0,
+      "color": "#89b4fa",
+      "description": "FC03: Read 4 holding registers from slave 1 addr 0x0000",
+      "named_values": {}
+    },
+    {
+      "id": "seq-fc06",
+      "name": "FC06 Write HR 1 = 0x1234",
+      "data_str": "01 06 00 00 12 34",
+      "encoding": "hex",
+      "terminator": "none",
+      "checksum": "crc16_modbus",
+      "checksum_start": 0,
+      "repeat_count": 1,
+      "repeat_interval_ms": 0,
+      "delay_before_ms": 0,
+      "byte_delay_ms": 0,
+      "color": "#a6e3a1",
+      "description": "FC06: Write 0x1234 to holding register 0 of slave 1",
+      "named_values": {}
+    },
+    {
+      "id": "seq-fc01",
+      "name": "FC01 Read Coils 1-8",
+      "data_str": "01 01 00 00 00 08",
+      "encoding": "hex",
+      "terminator": "none",
+      "checksum": "crc16_modbus",
+      "checksum_start": 0,
+      "repeat_count": 1,
+      "repeat_interval_ms": 0,
+      "delay_before_ms": 0,
+      "byte_delay_ms": 0,
+      "color": "#f9e2af",
+      "description": "FC01: Read 8 coils starting at address 0 from slave 1",
+      "named_values": {}
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig-exception",
+      "name": "Modbus Exception",
+      "enabled": true,
+      "match_type": "contains",
+      "pattern": "01 83",
+      "pattern_encoding": "hex",
+      "action": "log",
+      "action_data": "",
+      "color": "#f38ba8",
+      "description": "Fires when slave 1 returns an FC03 exception response (0x83)"
+    }
+  ]
+}

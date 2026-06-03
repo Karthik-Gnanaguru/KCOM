@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "kcom"
+version = "1.0.0"
+description = "Professional Serial & Network Communication Studio"
+requires-python = ">=3.11"
+dependencies = [
+    "PyQt6>=6.6.0",
+    "pyserial>=3.5",
+    "hidapi>=0.14.0",
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.29.0",
+]
+
+[project.optional-dependencies]
+bluetooth = ["bleak>=0.21.1"]
+hid = ["hid>=1.0.5"]
+api = ["fastapi>=0.111.0", "uvicorn[standard]>=0.30.0"]
+dev = ["pytest>=7.4", "pytest-qt>=4.2", "black>=23.0", "ruff>=0.1.0"]
+build = ["pyinstaller>=6.8.0"]
+
+[project.scripts]
+kcom = "main:main"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]

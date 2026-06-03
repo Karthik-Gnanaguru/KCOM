@@ -1,0 +1,74 @@
+{
+  "version": "1.1",
+  "created": "2026-05-29T00:00:00",
+  "name": "TCP Echo Client",
+  "notes": "Connects to a TCP echo server on 127.0.0.1:5000.\nStart a local echo server first:  ncat -l 5000 -k -e /bin/cat\nSend Hello World, then watch the echo trigger fire.",
+  "port_configs": [
+    {
+      "connection_type": "tcp_client",
+      "serial": {
+        "port": "",
+        "baud_rate": 115200,
+        "data_bits": 8,
+        "parity": "N",
+        "stop_bits": 1.0,
+        "flow_control": "none",
+        "timeout": 0.0
+      },
+      "network": {"host": "127.0.0.1", "port": 5000},
+      "hid": {"vendor_id": 0, "product_id": 0, "usage_page": 0, "interface_number": -1, "report_size": 64},
+      "named_pipe": {"path": ""},
+      "name": "TCP Echo Server",
+      "auto_reconnect": true
+    }
+  ],
+  "tap_configs": [],
+  "sequences": [
+    {
+      "id": "seq-hello",
+      "name": "Hello World",
+      "data_str": "Hello, World!",
+      "encoding": "ascii",
+      "terminator": "crlf",
+      "checksum": "none",
+      "checksum_start": 0,
+      "repeat_count": 1,
+      "repeat_interval_ms": 0,
+      "delay_before_ms": 0,
+      "byte_delay_ms": 0,
+      "color": "#89b4fa",
+      "description": "Send ASCII greeting with CRLF",
+      "named_values": {}
+    },
+    {
+      "id": "seq-flood",
+      "name": "Flood (10 Hz)",
+      "data_str": "54 45 53 54 # 0A",
+      "encoding": "hex",
+      "terminator": "none",
+      "checksum": "none",
+      "checksum_start": 0,
+      "repeat_count": 0,
+      "repeat_interval_ms": 100,
+      "delay_before_ms": 0,
+      "byte_delay_ms": 0,
+      "color": "#f38ba8",
+      "description": "Send 'TEST<n>\\n' at 10 Hz with auto-incrementing counter byte",
+      "named_values": {}
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig-echo",
+      "name": "Echo received",
+      "enabled": true,
+      "match_type": "contains",
+      "pattern": "Hello",
+      "pattern_encoding": "ascii",
+      "action": "log",
+      "action_data": "",
+      "color": "#a6e3a1",
+      "description": "Fires when the echo server reflects the greeting"
+    }
+  ]
+}

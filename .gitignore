@@ -1,0 +1,71 @@
+# ── Python ─────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+*.whl
+MANIFEST
+
+# ── Virtual environments ────────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+.env
+
+# ── PyInstaller build output ────────────────────────────────────────────────────
+# Build SCRIPTS live in build/ and are committed.
+# Build ARTIFACTS (binaries) go into dist/ and are NOT committed — they are
+# attached to GitHub Releases instead.
+dist/
+*.spec.bak
+
+# ── Test & coverage artefacts ───────────────────────────────────────────────────
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+htmlcov/
+tests/coverage_html/
+tests/report.html
+.pytest_cache/
+.tox/
+
+# ── KCom runtime files ──────────────────────────────────────────────────────────
+kcom-session.txt
+*.klog
+*.bak
+
+# ── Draft / development-only files ─────────────────────────────────────────────
+draft/
+
+# ── Internal project docs (local reference only, not for repo) ───────────────
+IMPLEMENTATION_PLAN.md
+USER_GUIDE.md
+WALKTHROUGH.md
+
+# ── IDE / editor ────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# ── OS ──────────────────────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+Desktop.ini
+ehthumbs.db
+$RECYCLE.BIN/
+
+# ── Secrets / credentials ───────────────────────────────────────────────────────
+.env
+*.pem
+*.key
+secrets.json
