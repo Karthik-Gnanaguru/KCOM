@@ -136,16 +136,41 @@ class TerminalWidget(QWidget):
     def append_rx(self, data: bytes, timestamp: float = 0.0) -> None:
         """Append received data as a 'RX : <bytes>' line.
 
+        In ASCII mode the data is split on LF (0x0A) per the ASCII chart so
+        that only LF drives new lines.  CR (0x0D) is stripped from each
+        segment (common in CRLF streams).  All other display modes receive the
+        raw chunk as a single line unchanged.
+
         When running sequences have registered highlight patterns the line is
         rendered with per-byte foreground colours so the matching bytes stand
         out from the surrounding RX text.
         """
         if not data:
             return
+        if self._display_mode == DisplayMode.ASCII:
+            for seg in self._split_on_lf(data):
+                if self._seq_highlights:
+                    self._append_rx_highlighted(seg)
+                else:
+                    self._append_colored(f"RX : {self._format_line(seg)}\n", self._colour("rx"))
+            return
         if self._seq_highlights:
             self._append_rx_highlighted(data)
         else:
             self._append_colored(f"RX : {self._format_line(data)}\n", self._colour("rx"))
+
+    @staticmethod
+    def _split_on_lf(data: bytes) -> list[bytes]:
+        """Split *data* on LF (0x0A), strip CR (0x0D) from each segment.
+
+        Empty segments (bare LF/CRLF line endings with no content) are dropped
+        so they do not produce blank 'RX : ' lines.
+        """
+        return [
+            seg
+            for raw in data.split(b"\x0a")
+            if (seg := raw.replace(b"\x0d", b""))
+        ]
 
     def append_tx(self, data: bytes) -> None:
         """Append sent data as a 'TX : <bytes>' line in the TX colour."""
